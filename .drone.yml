@@ -1,0 +1,21 @@
+# https://pkgs.alpinelinux.org/packages
+#
+pipeline:
+  build:
+    image: golang:1.7.5-alpine3.5
+    commands:
+      - echo "ipv6" >> /etc/modules
+      - echo "@edge-testing http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+      - echo "@edge-community http://dl-4.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+      - apk update && apk upgrade
+
+  # notify:
+    # image: plugins/slack
+    # webhook: ${SLACK_WEBHOOK}
+    # channel: drone-py
+    # username: drone-py
+    # template: >
+      # *{{ build.status }}* <{{ build.link }}|{{ repo.owner }}/{{ repo.name }}#{{ build.commit }}> ({{ build.ref }}) by {{ build.author }}
+    # when:
+      # event: [ push, pull_request ]
+      # status: [ success, failure ]
